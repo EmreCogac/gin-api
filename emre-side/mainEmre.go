@@ -17,6 +17,6 @@ func main() {
 func getData(ctx *gin.Context) {
 
 	ctx.JSON(200, gin.H{
-		"data ": "Hi i am gin framework ",
+		"data ": "Hi i am gin framework emre",
 	})
 }
