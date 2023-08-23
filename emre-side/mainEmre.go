@@ -2,23 +2,47 @@ package main
 
 import (
 	"io/ioutil"
+	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
-	router := gin.New()
+	router := gin.Default()
 
-	router.GET("/getData", getData)
+	// router.GET("/getData", getData) // admine atadım
 
-	router.GET("/getQuerySettings", getQuerySettings)
+	// router.GET("/getQuerySettings", getQuerySettings) // client a atadım
 
 	router.GET("/getUrlData/:name/:age", getUrlData)
 
 	router.POST("/postData", postData)
 
-	router.Run()
+	auth := gin.BasicAuth(gin.Accounts{
+		"user":   "pass",
+		"user2 ": "pass2",
+		"user3 ": "pass3",
+	})
+
+	admin := router.Group("/admin", auth)
+	{
+		admin.GET("/getData", getData)
+	}
+
+	client := router.Group("/client")
+	{
+		client.GET("/getQuerySettings", getQuerySettings)
+	}
+
+	server := &http.Server{
+		Addr:         ":9090",
+		Handler:      router,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+	server.ListenAndServe()
 
 }
 
