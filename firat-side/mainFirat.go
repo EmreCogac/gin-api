@@ -14,7 +14,7 @@ func main() {
 
 }
 
-func getData(ctx *gin.Context) {
+func getData(ctx *gin.Context) { //sa
 
 	ctx.JSON(200, gin.H{
 		"data ": "Hi i am gin framework firat ",
